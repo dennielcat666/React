@@ -1,0 +1,32 @@
+/* .example-enter { */
+.article-enter {		/* потому что transitionName="article" */
+	opacity: 0.01;
+}
+  
+/* .example-enter.example-enter-active { */
+.article-enter.article-enter-active {
+	opacity: 1;
+	transition: opacity 500ms ease-in;
+}
+  
+/* ДЛЯ СТАТЬИ КОТОРАЯ ПО УМОЛЧАНИЮ ОТКРЫТА index.js (быв. Article) accordeon.js App.js */
+/* .article-appear {
+	opacity: 0.01;
+}
+	
+.article-appear.article-appear-active {
+	opacity: 1;
+	transition: opacity 500ms ease-in;
+} */
+
+
+/* .example-leave { */
+.article-leave {
+	opacity: 1;
+}
+  
+/* .example-leave.example-leave-active { */
+.article-leave.article-leave-active {
+	opacity: 0.01;
+	transition: opacity 300ms ease-in;
+}

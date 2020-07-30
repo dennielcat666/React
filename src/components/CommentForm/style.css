@@ -1,0 +1,5 @@
+/* для CommentForm */
+
+.form-input__error {
+    outline-color: red;
+}
