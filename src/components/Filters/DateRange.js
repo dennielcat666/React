@@ -1,22 +1,28 @@
 /* Календарь с выбором диапазона дат */
 
 import React, { Component } from 'react'
+import {connect} from 'react-redux'
+import {changeDateRange, clearDateRange} from '../../AC'
 import DayPicker, {DateUtils} from "react-day-picker"
 
 import "react-day-picker/lib/style.css"
 
 class DateRange extends Component {
-	state = {
+	/* в редусере */
+	/* state = {
 		from: null,
 		to: null
-	}
+	} */
 
 	handleDayClick = (day) => {
-		this.setState(DateUtils.addDayToRange(day, this.state))
+		const { changeDateRange, range } = this.props
+		changeDateRange(DateUtils.addDayToRange(day, range))
+		/* this.setState(DateUtils.addDayToRange(day, this.state)) */
+		console.log("DateUtils.addDayToRange(day, range)", DateUtils.addDayToRange(day, range));
 	}
 
 	render() {
-		const { from, to } = this.state
+		const { from, to } = this.props.range;
 		const selectedRange = from && to && `${from.toDateString()} - ${to.toDateString()}`
 		return (
 			<div className="date-range">
@@ -31,12 +37,21 @@ class DateRange extends Component {
 		)
 	}
 
-	handleClean = () => {
+	/* handleClean = () => {
 		this.setState({
 			from: null,
 			to: null
 		})
+	} */
+
+	handleClean = () => {
+		const { clearDateRange } = this.props
+		clearDateRange()
+
 	}
 }
 
-export default DateRange
+export default connect(state => ({
+	range: state.filters.dateRange,
+	clearRange: state.filters.dateRange
+}), { changeDateRange, clearDateRange })(DateRange)
