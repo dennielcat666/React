@@ -23,11 +23,13 @@ export function changeDateRange(dateRange) {
 	}
 }
 
-export function clearDateRange() {
+
+/* для отдельного экшена */
+/* export function clearDateRange() {
 	return {
 		type: CLEAR_DATE_RANGE
 	}
-}
+} */
 
 export function changeSelection(selected) {
 	return {

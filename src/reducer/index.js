@@ -7,10 +7,14 @@
 import {combineReducers} from 'redux'	/* для объединения reducers в один */
 import counterReducer from './counter'
 import articles from './articles'
+import comments from './comments'
 import filters from './filters'
+
 
 export default combineReducers({		/* передаем структуру. ключи это то, как будут в store храниться данные */
 	counter: counterReducer,				/* значение counter (ключ?) это reducer который отвечает за это значение (counterReducer) */
 	articles,							/* более простая запись */
+	comments,
 	filters
+	
 })

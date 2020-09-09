@@ -44,14 +44,26 @@ class DateRange extends Component {
 		})
 	} */
 
-	handleClean = () => {
+
+	/* для отдельного экшена */
+	/* handleClean = () => {
 		const { clearDateRange } = this.props
 		clearDateRange()
+	} */
 
+	handleClean = () => {
+		const { changeDateRange } = this.props
+		changeDateRange({from: null, to: null})
 	}
 }
 
-export default connect(state => ({
-	range: state.filters.dateRange,
-	clearRange: state.filters.dateRange
-}), { changeDateRange, clearDateRange })(DateRange)
+export default connect(state => {
+	console.log("state.filters", state.filters);
+	return {
+		range: state.filters.dateRange
+	}
+}, { changeDateRange })(DateRange)
+
+/* export default connect(state => ({
+	range: state.filters.dateRange
+}), { changeDateRange })(DateRange) */

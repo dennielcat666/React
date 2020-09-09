@@ -3,6 +3,7 @@ import Article from './Article'				/* теперь путь обозначает
 import accordeon from '../decorators/accordeon'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
+import {filtratedArticlesSelector} from '../selectors'
 
 
 // ПЕРВАЯ ВЕРСИЯ ДЛЯ ТОГО ЧТО БЫ СТАТЬИ ОТКРЫВАЛИСЬ ОЧЕРЕДНО
@@ -31,6 +32,7 @@ class ArticleList extends Component {
 	/* } */
 
 	render() {
+		console.log('----', 'rendering article list');
 		const {openItemId, toggleOpenItem, articles} = this.props
 		const articleElements = articles.map(article => (
 			<li key={article.id}>
@@ -67,6 +69,18 @@ class ArticleList extends Component {
 	// }
 }
 
-export default connect(state => ({
+
+
+export default connect(state => {
+	console.log('----', 'connect');
+	return {
+		articles: filtratedArticlesSelector(state)
+	}
+})(accordeon(ArticleList))
+
+
+
+
+/* export default connect(state => ({
 	articles: state.articles
-}))(accordeon(ArticleList))
+}))(accordeon(ArticleList)) */

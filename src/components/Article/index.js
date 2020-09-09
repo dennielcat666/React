@@ -50,14 +50,18 @@ class Article extends PureComponent {		/* в PureComponent уже реализо
 	// }
 	
 	render() {
-		const {article, toggleOpen} = this.props
+		const {article, toggleOpen, deleteArticle} = this.props
 		console.log('----', 'render article');
 		/* const article = this.props.article; */
 		// const body = this.state.isOpen && <p>{article.text}</p> 		ниже в return вызов {body}
 		return(
 			<div ref={this.setContainerRef}>
 				<h3 onClick = {toggleOpen}>{article.title}</h3>
-				<button onClick={this.handleDelete}>Delete Me</button>
+
+				{/* handleDelete был переписан в connect */}
+				{/* <button onClick={this.handleDelete}>Delete Me</button> */}
+				<button onClick={deleteArticle}>Delete Me</button>
+
 				{/* {body}								{this.getBody()} вызов метода ниже */}
 				<CSSTransion
 					transitionName="article"
@@ -98,10 +102,19 @@ class Article extends PureComponent {		/* в PureComponent уже реализо
 		console.log('----', findDOMNode(commentsRef));		/* получим дом ноду в которой отрендерился CommentList */
 	}
 
-	handleDelete = () => {
+
+	/* переписано в connect (переписывать не обязательно, део вкуса, дучше оставлять handleDelete) */
+	/* handleDelete = () => {
 		this.props.deleteArticle(this.props.article.id)
-	}
+	} */
 }
 
+
+/* переписано из handleDelete*/
+export default connect(null, (dispatch, ownProps) => ({
+	deleteArticle: () => dispatch(deleteArticle(ownProps.article.id))
+}))(Article)
+
+
 // export default toggleOpen(Article)
-export default connect(null, {deleteArticle})(Article) 	/* toggleOpen передадим от родителя */
+/* export default connect(null, {deleteArticle})(Article) */ 	/* toggleOpen передадим от родителя */

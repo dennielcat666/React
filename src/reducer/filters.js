@@ -18,9 +18,10 @@ export default (filters = defaultFilters, action) => {
 			/* return Object.assign({}, filters, { dateRange: payload.dateRange}) 		то же что и внизу, только по старому стандарту*/ 
 			return {...filters, dateRange: payload.dateRange}
 
-		case CLEAR_DATE_RANGE:
-			/* return Object.assign({}, filters, { dateRange: payload.dateRange}) 		то же что и внизу, только по старому стандарту*/ 
-			return {...filters, dateRange: defaultFilters.dateRange}
+
+			/* для отдельного экшена */
+		/* case CLEAR_DATE_RANGE:
+			return {...filters, dateRange: defaultFilters.dateRange} */
 
 		case CHANGE_SELECTION:
 			return {...filters, selected: payload.selected}

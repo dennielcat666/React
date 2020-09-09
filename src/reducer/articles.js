@@ -1,7 +1,7 @@
 /* const { combineReducers } = require("redux"); */
 
 import {DELETE_ARTICLE} from '../constants'
-import {articles as defaultArticles} from '../fixtures'
+import {normalizedArticles as defaultArticles} from '../fixtures'
 
 export default (articles = defaultArticles, action) => {
 	const {type, payload} = action		/* {type, payload, response, error} */
