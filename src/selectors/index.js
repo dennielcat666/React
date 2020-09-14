@@ -1,6 +1,15 @@
 import {createSelector} from 'reselect'
+import {mapToArr} from '../reducer/utils'
 
-export const articlesSelector = state => state.articles
+
+/* IMMUTABLEJS */
+/* valueSeq - превратить обьект (ключ - значение) в просто список значений 
+toArray - превращение в обычный JS массив */
+export const articlesSelector = state => state.articles.entities.valueSeq().toArray()
+
+/* ДО ПЕРЕПИСКИ НА IMMUTABLEJS */
+/* export const articlesSelector = state => mapToArr(state.articles) */
+
 export const filtersSelector = state => state.filters
 export const idSelector = (state, props) => props.id
 export const commentsSelector = state => state.comments

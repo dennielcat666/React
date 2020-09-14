@@ -3,13 +3,16 @@
 import {createStore, compose, applyMiddleware} from 'redux'
 import reducer from '../reducer'
 import logger from '../middlewares/loggr'
+import randomId from '../middlewares/randomId'
+import callAPI from '../middlewares/callAPI'
+import thunk from 'redux-thunk'
 
 const composeEnhancers =  window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?
 	window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
 
 	}) : compose
 
-const enhancer = composeEnhancers(applyMiddleware(logger))
+const enhancer = composeEnhancers(applyMiddleware(thunk, randomId, callAPI, logger))
 
 const store = createStore(reducer, enhancer)
 

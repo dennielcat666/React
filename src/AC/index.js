@@ -1,5 +1,9 @@
 /* Action Creators */
-import {INCREMENT, DELETE_ARTICLE, CHANGE_DATE_RANGE, CHANGE_SELECTION, CLEAR_DATE_RANGE } from '../constants'
+import {
+	INCREMENT, DELETE_ARTICLE, CHANGE_DATE_RANGE, CHANGE_SELECTION, CLEAR_DATE_RANGE, ADD_COMMENT, LOAD_ALL_ARTICLES, 
+	LOAD_ARTICLE, START, SUCCESS, FAIL
+} from '../constants'
+/* import callAPI from '../middlewares/callAPI'; */
 
 
 export function increment() {
@@ -38,6 +42,58 @@ export function changeSelection(selected) {
 	}
 }
 
+export function addComment(comment, articleId) {
+	return {
+		type: ADD_COMMENT,
+		payload: { comment, articleId },
+		generateId: true
+	}
+}
+
+
+export function loadAllArticles() {
+	return {
+		type: LOAD_ALL_ARTICLES,
+		callAPI: '/api/article'
+	}
+}
+
+/* возвращаем функцию, в которой есть достум к методу dispatch, при помощи thunk
+асинхранная логика, которая будет выполняться в middleware, но писать ее можно в AC */
+export function loadArticleById(id) {
+	return (dispatch) => {
+		dispatch({
+			type: LOAD_ARTICLE + START,
+			payload: {id}
+		})
+
+		/* имитация долгого API  */
+		setTimeout(() => {
+			fetch(`/api/article/${id}`)
+				.then(res => res.json())
+				.then(response => dispatch({
+					type: LOAD_ARTICLE + SUCCESS,
+					payload: {id},
+					response
+				}))
+				.catch(error => dispatch({
+					type: LOAD_ARTICLE + FAIL,
+					payload: {id},
+					error
+				}))
+		}, 1000)
+	}
+}
+
+
+
+/* вместо плоского обьекта будем возвращать функцию, в которой есть достум к методу dispatch, при помощи thunk */
+/* export function loadArticleById(id) {
+	return {
+		type: LOAD_ARTICLE,
+		callAPI: `/api/article/${id}`
+	}
+} */
 
 
 /* export function increment() { */

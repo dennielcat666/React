@@ -2,13 +2,15 @@
 
 import React, {Component, PureComponent} from 'react'
 import CommentList from '../CommentList'
+import Loader from '../Loader'
 import PropTypes from 'prop-types'
 /* import toggleOpen from '../decorators/toggleOpen' */
 import {findDOMNode} from 'react-dom'			/* все что касается работы с реальным домом лежит в библтотеке 'react-dom' */
 import CSSTransion from 'react-addons-css-transition-group'  /* анимация для css */
 import './style.css'
 import {connect} from 'react-redux'
-import {deleteArticle} from '../../AC'
+import {deleteArticle, loadArticleById} from '../../AC'
+import { is } from 'immutable'
 
 /* export default function Article(props) { */  /* функцияБ которая возвращает то, как выглядит компонент */
 	/* const {article} = props */
@@ -33,6 +35,11 @@ class Article extends PureComponent {		/* в PureComponent уже реализо
 		}).isRequired,
 		isOpen: PropTypes.bool,
 		toggleOpen: PropTypes.func
+	}
+
+	componentWillReceiveProps(nextProps) {
+		/* если следующий пропс => открыт И настоящий пропс НЕ ровняется открытому (т.е закрыт) */
+		if (nextProps.isOpen && !this.props.isOpen) nextProps.loadArticle()
 	}
 
 
@@ -78,8 +85,13 @@ class Article extends PureComponent {		/* в PureComponent уже реализо
 	}
 
 	setContainerRef = (container) => {
+		console.log('----', container);
 		this.container = container
 	}
+
+	/* componentDidUpdate() {
+		console.log('', this.container.getBoundingClientReact());
+	} */
 
 	// ВЫНЕСЕНО В toggleOpen
 	// handleClick = () => {
@@ -89,10 +101,16 @@ class Article extends PureComponent {		/* в PureComponent уже реализо
 	// }
 
 	getBody() {
-		return this.props.isOpen && (					/* было this.state.isOpen */
+		const {article, isOpen} = this.props
+		if (!isOpen) return null
+
+		if (article.loading) return <Loader/>
+
+		return (					/* было this.state.isOpen .. после еще было this.props.isOpen && */
 			<div>
 				<p>{this.props.article.text}</p>
-				<CommentList comments = {this.props.article.comments} ref={this.setCommentsRef} />
+				{/* <CommentList comments = {this.props.article.comments} ref={this.setCommentsRef} /> */}
+				<CommentList article = {this.props.article} ref={this.setCommentsRef} />
 			</div>
 		)
 	}
@@ -112,7 +130,8 @@ class Article extends PureComponent {		/* в PureComponent уже реализо
 
 /* переписано из handleDelete*/
 export default connect(null, (dispatch, ownProps) => ({
-	deleteArticle: () => dispatch(deleteArticle(ownProps.article.id))
+	deleteArticle: () => dispatch(deleteArticle(ownProps.article.id)),
+	loadArticle: () => dispatch(loadArticleById(ownProps.article.id))
 }))(Article)
 
 

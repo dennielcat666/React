@@ -1,9 +1,11 @@
 import React, {Component} from 'react'
 import Article from './Article'				/* теперь путь обозначает папку */
+import Loader from './Loader'
 import accordeon from '../decorators/accordeon'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {filtratedArticlesSelector} from '../selectors'
+import {loadAllArticles} from '../AC'
 
 
 // ПЕРВАЯ ВЕРСИЯ ДЛЯ ТОГО ЧТО БЫ СТАТЬИ ОТКРЫВАЛИСЬ ОЧЕРЕДНО
@@ -26,6 +28,10 @@ class ArticleList extends Component {
 		toggleOpenItem: PropTypes.func.isRequired
 	}
 
+	componentDidMount() {
+		this.props.loadAllArticles()
+	}
+
 	/* ВЫНЕСЕНО В accordeon (openItemId) */
 	/* state = { */
 		/* openArticleId: null  */	/* изначально все статьи закрыты */
@@ -33,7 +39,9 @@ class ArticleList extends Component {
 
 	render() {
 		console.log('----', 'rendering article list');
-		const {openItemId, toggleOpenItem, articles} = this.props
+		const {openItemId, toggleOpenItem, articles, loading} = this.props
+
+		if (loading) return <Loader/>
 		const articleElements = articles.map(article => (
 			<li key={article.id}>
 				<Article
@@ -74,9 +82,10 @@ class ArticleList extends Component {
 export default connect(state => {
 	console.log('----', 'connect');
 	return {
-		articles: filtratedArticlesSelector(state)
+		articles: filtratedArticlesSelector(state),
+		loading: state.articles.loading
 	}
-})(accordeon(ArticleList))
+}, {loadAllArticles})(accordeon(ArticleList))
 
 
 

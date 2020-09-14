@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { changeSelection } from '../../AC'
 
 import 'react-select/dist/react-select.css'
+import { articlesSelector } from '../../selectors'
 
 class SelectFilter extends Component {
 	static propTypes = {
@@ -35,13 +36,20 @@ class SelectFilter extends Component {
 	}
 }
 
-export default connect(state => {
+export default connect(state => ({
+	selected: state.filters.selected,
+	articles: articlesSelector(state)
+}), {changeSelection})(SelectFilter)
+
+
+
+/* export default connect(state => {
 	console.log("state", state);
 	return {
 		selected: state.filters.selected,
 		articles: state.articles
 	}
-}, {changeSelection})(SelectFilter)
+}, {changeSelection})(SelectFilter) */
 
 /* export default connect(state => ({
 	selected: state.filters.selected,

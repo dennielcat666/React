@@ -2,11 +2,12 @@
 
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
+import {connect} from 'react-redux'
+import {addComment} from '../../AC'
 import './style.css'
 
 class CommentForm extends Component {
 	static propTypes = {
-
 	}
 
 	/* пустые строки для юзера и комментария */
@@ -33,6 +34,7 @@ class CommentForm extends Component {
 	/* очистка формы при нажатии на кнопку */
 	handleSubmit = ev => {
         ev.preventDefault()
+        this.props.addComment(this.state)
         this.setState({
             user: '',
             text: ''
@@ -65,4 +67,6 @@ const limits = {
     }
 }
 
-export default CommentForm
+export default connect(null, (dispatch, ownProps) => ({
+    addComment: (comment) => dispatch(addComment(comment, ownProps.articleId))
+}))(CommentForm)
