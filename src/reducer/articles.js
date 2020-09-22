@@ -1,10 +1,9 @@
 /* const { combineReducers } = require("redux"); */
 
-import {DELETE_ARTICLE, ADD_COMMENT, LOAD_ALL_ARTICLES, LOAD_ARTICLE, SUCCESS, START} from '../constants'
+import {DELETE_ARTICLE, ADD_COMMENT, LOAD_ALL_ARTICLES, LOAD_ARTICLE, LOAD_ARTICLE_COMMENTS, SUCCESS, START} from '../constants'
 /* import {normalizedArticles as defaultArticles} from '../fixtures' */
 import {arrToMap} from './utils'
 import {Map, fromJS, Record} from 'immutable'
-import { articles } from '../fixtures'
 
 
 /* IMMUTABLEJS Record */
@@ -14,7 +13,9 @@ const ArticleRecord = Record({
 	text: null,
 	date: null,
 	loading: false,
-	comments: []
+	comments: [],
+	commentsLoading: false,
+	commentsLoaded: false
 })			/* дефолтные значения */
 
 const ReducerRecord = Record({
@@ -34,6 +35,7 @@ export default (state = defaultState, action) => {
 
 		case ADD_COMMENT:
 			/* IMMUTABLE JS */
+			/* comments.concat(randomId) - вовращает новый массив не меняя при этом оригинальный (например push использовать нельзя) */
 			return state.updateIn(['entities', payload.articleId, 'comments'], comments => comments.concat(randomId))
 
 		case LOAD_ALL_ARTICLES + START:
@@ -51,6 +53,14 @@ export default (state = defaultState, action) => {
 
 		case LOAD_ARTICLE + SUCCESS:
 			return state.setIn(['entities', payload.id], new ArticleRecord(response))
+
+		case LOAD_ARTICLE_COMMENTS + START:
+			return state.setIn(['entities', payload.articleId, 'commentsLoading'], true)
+
+		case LOAD_ARTICLE_COMMENTS + SUCCESS:
+			return state
+                .setIn(['entities', payload.articleId, 'commentsLoading'], false)
+                .setIn(['entities', payload.articleId, 'commentsLoaded'], true)
 
 
 

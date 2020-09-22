@@ -24,10 +24,10 @@ export default store => next => action => {
 	setTimeout(() => fetch(callAPI)		/* обращение к серверу, превращаем все в обычный js обьект */
 		.then(res => res.json())
 		/* если все хорошо то диспатчим новый экшен (передаем управление дальше, с новым экшеном) */
-		.then(response => next({...rest, type: type + SUCCESS, response}))
+		.then(response => {console.log({callAPI, response}); return next({...rest, type: type + SUCCESS, response})})
 		/* если запрос не прошел, то диспатчим error,  и передаем управление дальше с типом LOAD_ALL_ARTICLES_FAIL
 		(type: type + FAIL) и в будущем этот error как то показать*/
-		.catch(error => next({...rest, type: type + FAIL, error}))
+		.catch(error => {console.log({callAPI, error}); return next({...rest, type: type + FAIL, error})})
 	, 1000)
 
 

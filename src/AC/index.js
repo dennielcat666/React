@@ -1,7 +1,7 @@
 /* Action Creators */
 import {
 	INCREMENT, DELETE_ARTICLE, CHANGE_DATE_RANGE, CHANGE_SELECTION, CLEAR_DATE_RANGE, ADD_COMMENT, LOAD_ALL_ARTICLES, 
-	LOAD_ARTICLE, START, SUCCESS, FAIL
+	LOAD_ARTICLE, LOAD_ARTICLE_COMMENTS, START, SUCCESS, FAIL
 } from '../constants'
 /* import callAPI from '../middlewares/callAPI'; */
 
@@ -55,6 +55,15 @@ export function loadAllArticles() {
 	return {
 		type: LOAD_ALL_ARTICLES,
 		callAPI: '/api/article'
+	}
+}
+
+export function loadArticleComments(articleId) {
+	/* console.log("articleId!!!!!!!!!!!!!!", articleId) */
+	return {
+		type: LOAD_ARTICLE_COMMENTS,
+		payload: { articleId },
+		callAPI: `/api/comment?acticle=${articleId}`
 	}
 }
 
