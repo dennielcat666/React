@@ -70,7 +70,9 @@ export function loadArticleComments(articleId) {
 /* возвращаем функцию, в которой есть достум к методу dispatch, при помощи thunk
 асинхранная логика, которая будет выполняться в middleware, но писать ее можно в AC */
 export function loadArticleById(id) {
-	return (dispatch) => {
+	return (dispatch, getState) => {
+		const article = getState().articles.entities.get(id)
+		if (article && article.text) return
 		dispatch({
 			type: LOAD_ARTICLE + START,
 			payload: {id}

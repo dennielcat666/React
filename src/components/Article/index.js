@@ -10,7 +10,6 @@ import CSSTransion from 'react-addons-css-transition-group'  /* анимация
 import './style.css'
 import {connect} from 'react-redux'
 import {deleteArticle, loadArticleById} from '../../AC'
-import { is } from 'immutable'
 
 /* export default function Article(props) { */  /* функцияБ которая возвращает то, как выглядит компонент */
 	/* const {article} = props */
@@ -28,18 +27,30 @@ class Article extends PureComponent {		/* в PureComponent уже реализо
 	// 	article: PropTypes.object.isRequired
 	// }
 	static PropTypes = {
+		id: PropTypes.string.isRequired,
 		article: PropTypes.shape({
 			id: PropTypes.string,
 			title: PropTypes.string.isRequired,
 			text: PropTypes.string
-		}).isRequired,
+		}),
 		isOpen: PropTypes.bool,
 		toggleOpen: PropTypes.func
 	}
 
-	componentWillReceiveProps(nextProps) {
+	/* убрано на less7 */
+	/* componentWillReceiveProps(nextProps) - вызывается каждый раз при обновлении (обновлении страницы)
+	не не при первом монтировании */
+	/* componentWillReceiveProps(nextProps) { */
 		/* если следующий пропс => открыт И настоящий пропс НЕ ровняется открытому (т.е закрыт) */
-		if (nextProps.isOpen && !this.props.isOpen) nextProps.loadArticle()
+		/* if (nextProps.isOpen && !this.props.isOpen) nextProps.loadArticle() */
+		/* if (nextProps.isOpen) nextProps.loadArticle()
+	} */
+
+
+	/* для корректного открытия статей. componentDidMount - вызывается один раз при монтировании компонента */
+	componentDidMount() {
+		const {isOpen, loadArticle} = this.props
+		if (isOpen) loadArticle()
 	}
 
 
@@ -59,6 +70,7 @@ class Article extends PureComponent {		/* в PureComponent уже реализо
 	render() {
 		const {article, toggleOpen, deleteArticle} = this.props
 		console.log('----', 'render article');
+		if (!article) return null
 		/* const article = this.props.article; */
 		// const body = this.state.isOpen && <p>{article.text}</p> 		ниже в return вызов {body}
 		return(
@@ -129,11 +141,25 @@ class Article extends PureComponent {		/* в PureComponent уже реализо
 
 
 /* переписано из handleDelete*/
-export default connect(null, (dispatch, ownProps) => ({
-	deleteArticle: () => dispatch(deleteArticle(ownProps.article.id)),
-	loadArticle: () => dispatch(loadArticleById(ownProps.article.id))
+export default connect((state, props) => ({
+	article: state.articles.entities.get(props.id)
+}), (dispatch, ownProps) => ({
+	deleteArticle: () => dispatch(deleteArticle(ownProps.id)),
+	loadArticle: () => dispatch(loadArticleById(ownProps.id))
 }))(Article)
 
+
+/* export default connect((state, props) => {
+	console.log("STATE ARTICLE", state);
+	console.log("PROPS ARTICLE", props.id);
+	console.log("ENTITIES ARTICLE", state.articles.entities.get(props.id));
+	return {
+		article: state.articles.entities.get(props.id)
+	}
+}, (dispatch, ownProps) => ({
+	deleteArticle: () => dispatch(deleteArticle(ownProps.id)),
+	loadArticle: () => dispatch(loadArticleById(ownProps.id))
+}))(Article) */
 
 // export default toggleOpen(Article)
 /* export default connect(null, {deleteArticle})(Article) */ 	/* toggleOpen передадим от родителя */

@@ -14,8 +14,8 @@ module.exports = {
         proxy: [{
             path: '/api/',
             target: 'http://localhost:3001'
-        }]/* ,
-        historyApiFallback: true */
+        }],
+        historyApiFallback: true    /* настройка для BrowserRouter из 'react-router-dom' */
     },
     module: {
         // loaders: [

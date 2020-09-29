@@ -6,6 +6,8 @@ import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {filtratedArticlesSelector} from '../selectors'
 import {loadAllArticles} from '../AC'
+import {Link} from 'react-router-dom'
+
 
 
 // ПЕРВАЯ ВЕРСИЯ ДЛЯ ТОГО ЧТО БЫ СТАТЬИ ОТКРЫВАЛИСЬ ОЧЕРЕДНО
@@ -29,7 +31,8 @@ class ArticleList extends Component {
 	}
 
 	componentDidMount() {
-		this.props.loadAllArticles()
+		const {loaded, loading, loadAllArticles} = this.props
+		if (!loading && !loaded) loadAllArticles()
 	}
 
 	/* ВЫНЕСЕНО В accordeon (openItemId) */
@@ -39,22 +42,23 @@ class ArticleList extends Component {
 
 	render() {
 		console.log('----', 'rendering article list');
-		const {openItemId, toggleOpenItem, articles, loading} = this.props
+		const {openItemId, toggleOpenItem, articles, loading, path} = this.props
 
 		if (loading) return <Loader/>
 		const articleElements = articles.map(article => (
 			<li key={article.id}>
-				<Article
+				{/* <Link to={`/articles/${article.id}`}>{article.title}</Link> */}
+				
+				{/* to={`${path}/${article.id}`} - Если в Root поменяется путь, то можно будет не переписывать везде, где этот путь встречается */}
+				<Link to={`${path}/${article.id}`}>{article.title}</Link>
+				{/* <Article
 					article={article}
-					isOpen={article.id === openItemId}
-
-					/* для упрщенного варианта */
-					toggleOpen={toggleOpenItem(article.id)}
-
-
-					/* для ванианта с карированием */
-					// toggleOpen={this.toggleOpenArticle(article.id)}			/* функция ниже */
-				/>
+					isOpen={article.id === openItemId} */}
+					{/* для упрщенного варианта */}
+					{/* toggleOpen={toggleOpenItem(article.id)} */}
+					{/* для ванианта с карированием */}
+					{/* toggleOpen={this.toggleOpenArticle(article.id)} */}			{/* функция ниже */}
+				{/* /> */}
 			</li>
 		))
 		return (
@@ -83,7 +87,8 @@ export default connect(state => {
 	console.log('----', 'connect');
 	return {
 		articles: filtratedArticlesSelector(state),
-		loading: state.articles.loading
+		loading: state.articles.loading,
+		loaded: state.articles.loaded
 	}
 }, {loadAllArticles})(accordeon(ArticleList))
 

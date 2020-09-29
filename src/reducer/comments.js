@@ -27,7 +27,7 @@ export default (state = new ReducerState(), action) => {
 		case LOAD_ARTICLE_COMMENTS + SUCCESS:
 			// const foo = arrToMap(response, CommentRecord);
 			console.log({response});
-			return state.mergeIn(['entities'], arrToMap(response, CommentRecord))
+			return state.mergeIn(['entities'], arrToMap(response.records, CommentRecord))
 			/* break; */
 	}
 

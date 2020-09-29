@@ -42,6 +42,7 @@ export default (state = defaultState, action) => {
 			return state.set('loading', true)
 
 		case LOAD_ALL_ARTICLES + SUCCESS:
+			console.log('RESPONSE', response);
 			return state
 				.set('entities', arrToMap(response, ArticleRecord))
 				.set('loading', false)
