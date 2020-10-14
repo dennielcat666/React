@@ -76,6 +76,7 @@ class CommentList extends Component {
 		if (!isOpen) return null
 		if (commentsLoading) return <Loader />
 		if (!commentsLoaded) return null
+		console.log("COMMENTS", comments);
 
 		const body = comments.length ? (
 			<ul>

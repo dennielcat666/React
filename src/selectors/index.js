@@ -1,5 +1,4 @@
 import {createSelector} from 'reselect'
-import {mapToArr} from '../reducer/utils'
 
 
 /* IMMUTABLEJS */
@@ -12,7 +11,7 @@ export const articlesSelector = state => state.articles.entities.valueSeq().toAr
 
 export const filtersSelector = state => state.filters
 export const idSelector = (state, props) => props.id
-export const commentsSelector = state => state.comments
+export const commentsSelector = state => state.comments.entities
 
 
 /* createSelector создает мемоизированный селектор, который будет вызывать предыдущие селекторы,
@@ -31,8 +30,9 @@ export const filtratedArticlesSelector = createSelector(articlesSelector, filter
 })
 
 export const createCommentSelector = () => createSelector(commentsSelector, idSelector, (comments, id) => {
-	/* console.log('----', 'find comment', id); */
-	return comments[id]
+	console.log('createCommentSelector', {comments:  comments.map(item => console.log({item})), id, comment:  comments.get(id)});
+
+	return comments.get(id)
 })
 
 

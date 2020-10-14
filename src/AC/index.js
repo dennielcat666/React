@@ -1,7 +1,7 @@
 /* Action Creators */
 import {
 	INCREMENT, DELETE_ARTICLE, CHANGE_DATE_RANGE, CHANGE_SELECTION, CLEAR_DATE_RANGE, ADD_COMMENT, LOAD_ALL_ARTICLES, 
-	LOAD_ARTICLE, LOAD_ARTICLE_COMMENTS, START, SUCCESS, FAIL
+	LOAD_ARTICLE, LOAD_ARTICLE_COMMENTS, LOAD_COMMENTS_FOR_PAGE, START, SUCCESS, FAIL
 } from '../constants'
 /* import callAPI from '../middlewares/callAPI'; */
 
@@ -63,7 +63,7 @@ export function loadArticleComments(articleId) {
 	return {
 		type: LOAD_ARTICLE_COMMENTS,
 		payload: { articleId },
-		callAPI: `/api/comment?acticle=${articleId}`
+		callAPI: `/api/comment?article=${articleId}`
 	}
 }
 
@@ -73,6 +73,7 @@ export function loadArticleById(id) {
 	return (dispatch, getState) => {
 		const article = getState().articles.entities.get(id)
 		if (article && article.text) return
+
 		dispatch({
 			type: LOAD_ARTICLE + START,
 			payload: {id}
@@ -92,8 +93,21 @@ export function loadArticleById(id) {
 					payload: {id},
 					error
 				}))
-		}, 1000)
+		}, 500)
 	}
+}
+
+export function checkAndLoadCommentsForPage(page) {
+    return (dispatch, getState) => {
+        const {comments: {pagination}} = getState()
+        if (pagination.getIn([page, 'loading']) || pagination.getIn([page, 'ids'])) return
+
+        dispatch({
+            type: LOAD_COMMENTS_FOR_PAGE,
+            payload: { page },
+            callAPI: `/api/comment?limit=5&offset=${(page - 1) * 5}`
+        })
+    }
 }
 
 

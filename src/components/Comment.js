@@ -5,6 +5,7 @@ import {createCommentSelector} from '../selectors'
 
 
 function Comment({comment}) {
+	console.log('COMMENT-2', comment);
 	return (
 		<div>
 			{comment.text} <b>by {comment.user}</b>
@@ -25,7 +26,6 @@ Comment.propTypes = {
 (при инициализации нового коммента) */
 const createMapStateToProps = () => {
 	const commentSelector = createCommentSelector()
-
 	return (state, ownProps) => ({
 		comment: commentSelector(state, ownProps)
 	})

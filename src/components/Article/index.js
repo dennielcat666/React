@@ -121,7 +121,7 @@ class Article extends PureComponent {		/* в PureComponent уже реализо
 		return (					/* было this.state.isOpen .. после еще было this.props.isOpen && */
 			<div>
 				<p>{this.props.article.text}</p>
-				{/* <CommentList comments = {this.props.article.comments} ref={this.setCommentsRef} /> */}
+				 {/* <CommentList comments = {this.props.article.comments} ref={this.setCommentsRef} /> */}
 				<CommentList article = {this.props.article} ref={this.setCommentsRef} />
 			</div>
 		)

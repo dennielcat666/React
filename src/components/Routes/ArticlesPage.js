@@ -6,9 +6,6 @@ import Article from '../Article'
 import {Route} from 'react-router-dom'
 
 class ArticlesPage extends Component {
-	static propTypes = {
-
-	}
 
 	render() {
 		return (
