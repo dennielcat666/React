@@ -18,6 +18,10 @@ class CommentList extends Component {
 		isOpen: PropTypes.bool,
 		toggleOpen: PropTypes.func
 	}
+
+	static contextTypes = {
+		user: PropTypes.string
+	}
 	
 	// ВЫНЕСЕНО В toggleOpen
 	// state = {
@@ -86,6 +90,7 @@ class CommentList extends Component {
 
 		return (
 			<div>
+				{this.context.user}
                 {body}
                 <CommentForm articleId = {id} />
             </div>
@@ -93,4 +98,7 @@ class CommentList extends Component {
 	}
 }
 
-export default connect(null, { loadArticleComments })(toggleOpen(CommentList))
+/* {pure: false} - 4 параметр connect который отключает
+shouldComponentUpdate (для того что бы дочерние компоненты
+обновдлялись less8 1:27:35) */
+export default connect(null, { loadArticleComments }, null, {pure: false})(toggleOpen(CommentList))

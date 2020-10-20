@@ -12,27 +12,33 @@ class UserForm extends Component {
 	хранить состояние этой формы, а не где- то в реальном DOM'е
 	значитт нужно создать state */
 
-	state = {
+	/* state = {
 		username: ''
-	}
+	} */
 
 	render() {
 		return (
 			<div>
 				<label>Username: </label>
-				<input type="text" value={this.state.username} onChange={this.handleChange} />
+				<input type="text" value={this.props.value}/* {this.state.username} (убрано в less8) */ onChange={this.handleChange} />
 			</div>
 		)
 	}
 
 	handleChange = ev => {
 		/* if (ev.target.value.length > 15) return */ 		/* ограничили input 15'ю символами */
-		if (ev.target.value.length > 15) return this.setState({
+		
+		/* убрано в less8 */
+		/* if (ev.target.value.length > 15) return this.setState({
 			username: ''
-		})
-		this.setState({
+		}) */
+
+		this.props.onChange(ev.target.value)
+
+		/* убрано в less8 */
+		/* this.setState({
 			username: ev.target.value
-		})
+		}) */
 	}
 }
 

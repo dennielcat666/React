@@ -6,13 +6,15 @@ import logger from '../middlewares/logger'
 import randomId from '../middlewares/randomId'
 import callAPI from '../middlewares/callAPI'
 import thunk from 'redux-thunk'
+import {routerMiddleware} from 'react-router-redux'
+import history from '../history'
 
 const composeEnhancers =  window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?
 	window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
 
 	}) : compose
 
-const enhancer = composeEnhancers(applyMiddleware(thunk, randomId, callAPI, logger))
+const enhancer = composeEnhancers(applyMiddleware(thunk, randomId, callAPI, routerMiddleware(history), logger))
 
 const store = createStore(reducer, enhancer)
 

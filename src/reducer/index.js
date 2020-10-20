@@ -5,6 +5,7 @@
 
 
 import {combineReducers} from 'redux'	/* для объединения reducers в один */
+import {routerReducer as router} from 'react-router-redux'
 import counterReducer from './counter'
 import articles from './articles'
 import comments from './comments'
@@ -15,6 +16,7 @@ export default combineReducers({		/* передаем структуру. клю
 	counter: counterReducer,				/* значение counter (ключ?) это reducer который отвечает за это значение (counterReducer) */
 	articles,							/* более простая запись */
 	comments,
-	filters
+	filters,
+	router
 	
 })

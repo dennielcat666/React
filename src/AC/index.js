@@ -4,6 +4,7 @@ import {
 	LOAD_ARTICLE, LOAD_ARTICLE_COMMENTS, LOAD_COMMENTS_FOR_PAGE, START, SUCCESS, FAIL
 } from '../constants'
 /* import callAPI from '../middlewares/callAPI'; */
+import {push} from 'react-router-redux'
 
 
 export function increment() {
@@ -82,18 +83,25 @@ export function loadArticleById(id) {
 		/* имитация долгого API  */
 		setTimeout(() => {
 			fetch(`/api/article/${id}`)
-				.then(res => res.json())
+				.then(res => {
+					if (res.status >= 400) throw new Error(res.statusText)
+					return res.json()
+				})
 				.then(response => dispatch({
 					type: LOAD_ARTICLE + SUCCESS,
 					payload: {id},
 					response
 				}))
-				.catch(error => dispatch({
-					type: LOAD_ARTICLE + FAIL,
-					payload: {id},
-					error
-				}))
-		}, 500)
+				.catch(error => {
+					dispatch(push('/error'))
+
+					dispatch({
+						type: LOAD_ARTICLE + FAIL,
+						payload: {id},
+						error
+					})
+				})
+		}, 1000)
 	}
 }
 

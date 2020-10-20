@@ -21,8 +21,8 @@ import {deleteArticle, loadArticleById} from '../../AC'
 	/* ) */
 /* } */
 
-/* class Article extends Component { */
-class Article extends PureComponent {		/* в PureComponent уже реализован shouldComponentUpdate с поверхностным сравнением props */
+class Article extends Component {
+/* class Article extends PureComponent {	 */	/* в PureComponent уже реализован shouldComponentUpdate с поверхностным сравнением props */
 	// static propTypes = {
 	// 	article: PropTypes.object.isRequired
 	// }
@@ -141,12 +141,15 @@ class Article extends PureComponent {		/* в PureComponent уже реализо
 
 
 /* переписано из handleDelete*/
+/* {pure: false} - 4 параметр connect который отключает 
+shouldComponentUpdate (для того что бы дочерние компоненты 
+обновдлялись less8 1:27:35) */
 export default connect((state, props) => ({
 	article: state.articles.entities.get(props.id)
 }), (dispatch, ownProps) => ({
 	deleteArticle: () => dispatch(deleteArticle(ownProps.id)),
 	loadArticle: () => dispatch(loadArticleById(ownProps.id))
-}))(Article)
+}), null, {pure: false})(Article)
 
 
 /* export default connect((state, props) => {

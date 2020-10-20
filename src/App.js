@@ -2,16 +2,22 @@ import React, {Component} from 'react'
 import Root from './components/Root'
 import {Provider} from 'react-redux' /* для работы с компонентом connect */
 /* import {HashRouter as Router} from 'react-router-dom' */
-import {BrowserRouter as Router} from 'react-router-dom' /* как  HashRouter, но без /#/ а так же надо настроить в webpack что бы отдавался обратно index.html и перезапустить сервер (npm start), иначе ошибка */
+/* import {BrowserRouter as Router} from 'react-router-dom' */ /* как  HashRouter, но без /#/ а так же надо настроить в webpack что бы отдавался обратно index.html и перезапустить сервер (npm start), иначе ошибка */
+import {ConnectedRouter} from 'react-router-redux'
 import store from './store'
+import history from './history'
 
 export default class App extends Component {
 	render() {
 		return (
 			<Provider store = {store}>
-				<Router>
+				{/* <Router>
 					<Root />
-				</Router>
+				</Router> */}
+
+				<ConnectedRouter history = {history}>
+					<Root />
+				</ConnectedRouter>
 			</Provider>
 		)
 	}
