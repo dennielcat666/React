@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import PropTypes from 'prop-types'
 import CommentsPagination from '../CommentsPagination'
 import {Redirect, Route} from 'react-router-dom'
 

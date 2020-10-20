@@ -6,6 +6,7 @@ import Loader from './Loader'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {loadArticleComments} from '../AC'
+import LocalizedText from './LocalizedText'
 
 
 class CommentList extends Component {
@@ -50,7 +51,7 @@ class CommentList extends Component {
 		const text = isOpen ? 'Hide comments' : 'Show comments'
 		return (
 			<div>
-				<button onClick={toggleOpen}>{text}</button>
+				<button onClick={toggleOpen}><LocalizedText>{text}</LocalizedText></button>
 				{this.getBody()}
 			</div>
 		)
@@ -86,7 +87,7 @@ class CommentList extends Component {
 			<ul>
 				{comments.map(id => <li key = {id}><Comment id = {id} /></li>)}
 			</ul>
-		) : <h3>No comments yet</h3>
+		) : <h3><LocalizedText>No comments yet</LocalizedText></h3>
 
 		return (
 			<div>

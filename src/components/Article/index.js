@@ -1,9 +1,10 @@
 /* раньше назывался Article */
 
 import React, {Component, PureComponent} from 'react'
+import PropTypes from 'prop-types'
 import CommentList from '../CommentList'
 import Loader from '../Loader'
-import PropTypes from 'prop-types'
+import LocalizedText from '../LocalizedText'
 /* import toggleOpen from '../decorators/toggleOpen' */
 import {findDOMNode} from 'react-dom'			/* все что касается работы с реальным домом лежит в библтотеке 'react-dom' */
 import CSSTransion from 'react-addons-css-transition-group'  /* анимация для css */
@@ -79,7 +80,9 @@ class Article extends Component {
 
 				{/* handleDelete был переписан в connect */}
 				{/* <button onClick={this.handleDelete}>Delete Me</button> */}
-				<button onClick={deleteArticle}>Delete Me</button>
+				<button onClick={deleteArticle}>
+					<LocalizedText>Delete me</LocalizedText>
+				</button>
 
 				{/* {body}								{this.getBody()} вызов метода ниже */}
 				<CSSTransion
